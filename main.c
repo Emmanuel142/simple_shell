@@ -8,8 +8,7 @@ int main(void)
 {
 	pid_t c_pid;
 	int status, n, is_terminal, e;
-	char *arg[200], *delimiter;
-	char buffer[100];
+	char *arg[200], *delimiter, buffer[100];
 
 	is_terminal = isatty(STDIN_FILENO);
 	status = 0;
@@ -17,7 +16,6 @@ int main(void)
 	while (1)
 	{
 		c_pid = fork();
-
 		if (c_pid == -1)
 		{
 			perror("Fork failed");
@@ -46,10 +44,12 @@ int main(void)
 		{
 			wait(&status);
 			if (!is_terminal || (WIFEXITED(status) && WEXITSTATUS(status) == 98))
+			{
+				putchar('\n');
 				exit(0);
+			}
 		}
 	}
-
 }
 int print_prompt(int terminal)
 {
@@ -103,7 +103,7 @@ char *_strchr(const char *str, char c)
 	while (*str != '\0')
 	{
 		if (*str == c)
-			return (char *)str;
+			return ((char *)str);
 		str++;
 	}
 	return (NULL);
