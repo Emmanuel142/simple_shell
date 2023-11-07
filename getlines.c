@@ -2,7 +2,7 @@
 
 /**
  * input_buf - chained buffers commands
- * @info: struct parameter
+ * @info_t: struct parameter
  * @buf: address of buffer
  * @length: address of length var
  *
@@ -18,11 +18,11 @@ ssize_t input_buf(info_t *info, char **buf, size_t *length)
 		/*bfree((void **)info->cmd_buf);*/
 		free(*buf);
 		*buf = NULL;
-		signal(SIGINT, sigintHandler);
+		signal(SIGINT, sig_hAndler);
 #if USE_GETLINE
 		r = getline(buf, &length_p, stdin);
 #else
-		r = _getline(info, buf, &length_p);
+		r = get_line(info, buf, &length_p);
 #endif
 		if (r > 0)
 		{
@@ -33,7 +33,7 @@ ssize_t input_buf(info_t *info, char **buf, size_t *length)
 			}
 			info->linecount_flag = 1;
 			remove_comments(*buf);
-			build_history_list(info, *buf, info->histcount++);
+			build_history_list(info, *buf, info->history_count++);
 			/* if (_strchr(*buf, ';')) is this a command chain? */
 			{
 				*length = r;
@@ -46,7 +46,7 @@ ssize_t input_buf(info_t *info, char **buf, size_t *length)
 
 /**
  * get_input - obtains a line minus the newline
- * @info: parameter struct
+ * @info_t: parameter struct
  *
  * Return: bytes read
  */
@@ -55,7 +55,7 @@ ssize_t get_input(info_t *info)
 	static char *buf; /* the ';' command chain buffer */
 	static size_t i, h, length;
 	ssize_t r = 0;
-	char **buf_p = &(info->arg), *p;
+	char **buf_p = &(info->argv), *p;
 
 	_putchar(BUF_FLUSH);
 	r = input_buf(info, &buf, &length);
@@ -82,7 +82,7 @@ ssize_t get_input(info_t *info)
 		}
 
 		*buf_p = p; /* pass back pointer to current command position */
-		return (_strlen(p)); /* return length of current command */
+		return (strlen(p)); /* return length of current command */
 	}
 
 	*buf_p = buf; /* else not a chain, pass back buffer from _getline() */
@@ -91,7 +91,7 @@ ssize_t get_input(info_t *info)
 
 /**
  * read_buf - reads a buffer
- * @info: parameter struct
+ * @info_t: parameter struct
  * @buf: buffer
  * @q: size
  *
@@ -105,13 +105,13 @@ ssize_t read_buf(info_t *info, char *buf, size_t *q)
 		return (0);
 	r = read(info->readfd, buf, READ_BUF_SIZE);
 	if (r >= 0)
-		qi = r;
+		q = r;
 	return (r);
 }
 
 /**
  * get_line - obtains next line of input from STDIN
- * @info: parameter struct
+ * @info_t: parameter struct
  * @ptr: address of pointer to buffer, preallocated or NULL
  * @lenn: size of preallocated ptr buffer if not NULL
  *
@@ -127,7 +127,7 @@ int get_line(info_t *info, char **ptr, size_t *length)
 
 	p = *ptr;
 	if (p && lenn)
-		s = *lenn;
+		s = *length;
 	if (j == length)
 		j = length = 0;
 
