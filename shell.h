@@ -86,7 +86,7 @@ char *_strchr(const char *str, char c);
 
 char *_strncpy(char *dest, char *src, int m);
 char *_strncat(char *dest, char *src, int m);
-char *_strchr(char *s, char d);
+char *_strchr(const char *s, char d);
 char *get_history_file(info_t *info);
 
 int write_history(info_t *info);
