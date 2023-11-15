@@ -45,7 +45,6 @@ int main(void)
 			wait(&status);
 			if (!is_terminal || (WIFEXITED(status) && WEXITSTATUS(status) == 98))
 			{
-				putchar('\n');
 				exit(0);
 			}
 		}
