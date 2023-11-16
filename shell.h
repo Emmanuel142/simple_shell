@@ -19,4 +19,10 @@ char *_strchr(const char *str, char c);
 void handle_signal(int signum);
 char *find_path(char *command);
 char *_strcpy(char *dest, char *src);
+int builtin_env(void);
+int builtin_list(char *prompt);
+int str_compare(char *string1, char *string2, int number);
+char *str_duplicate(char *string);
+int str_len(char *string);
+int builtin_exit(void);
 #endif

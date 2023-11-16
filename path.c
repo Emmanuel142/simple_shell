@@ -41,7 +41,7 @@ char *find_path(char *command)
 	return (NULL);
 }
 /**
- **_strcpy - replicates a string
+ **_strcat - replicates a string
  *@dest: destination the string is replicated to
  *@src: the source string
  *Return: the copy of the string
@@ -52,7 +52,7 @@ char *_strcat(char *dest, char *src)
 	char *s = dest;
 
 	j = 0;
-	len = strlen (dest);
+	len = str_len(dest);
 	while (src[j] != '\0')
 	{
 		dest[len + j] = src[j];

@@ -34,7 +34,7 @@ int main(void)
 				exit(-1);
 			}
 			e = tokenize_input(buffer, arg, delimiter, n);
-			if (e == 0)
+			if (e == 0 || (builtin_list(arg[0]) == 98))
 				exit(98);
 			arg[e] = NULL;
 			if (stat(arg[0], &st) == 0)
