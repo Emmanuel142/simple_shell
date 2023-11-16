@@ -10,12 +10,13 @@ extern char** environ;
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
+#include <sys/stat.h>
 
-
-extern volatile sig_atomic_t interrupted;
 
 int print_prompt(int terminal);
 int tokenize_input(char *buffer, char *token_array[], char *delimiter, int read_count);
 char *_strchr(const char *str, char c);
 void handle_signal(int signum);
+char *find_path(char *command);
+char *_strcpy(char *dest, char *src);
 #endif

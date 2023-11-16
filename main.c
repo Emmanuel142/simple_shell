@@ -9,6 +9,7 @@ int main(void)
 	pid_t c_pid;
 	int status, n, is_terminal, e;
 	char *arg[200], *delimiter, buffer[100];
+	struct stat st;
 
 	is_terminal = isatty(STDIN_FILENO);
 	status = 0;
@@ -36,7 +37,14 @@ int main(void)
 			if (e == 0)
 				exit(98);
 			arg[e] = NULL;
-			execve(arg[0], arg, environ);
+			if (stat(arg[0], &st) == 0)
+			{
+				execve(arg[0], arg, environ);
+			}
+			else if (stat(find_path(arg[0]), &st) == 0)
+			{
+				execve(find_path(arg[0]), arg, environ);
+			}
 			perror(arg[0]);
 			exit(-1);
 		}
